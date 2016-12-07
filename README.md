@@ -45,6 +45,14 @@ Following examples illustrate usage of the commands with example configuration.
 To use example patterns, you need to copy them to some path and configure correct paths
 in the file. The following examples run from the source code tree.
 
+Prerequisites
+-------------
+
+Since events are created to redis pubsub channels, you obviously need redis running. The
+redis host and port are configured in logtrails.cfg, defaulting to localhost.
+
+Redis auth will be added later. This is just PoC after all!
+
 Run watcher daemon
 ------------------
 

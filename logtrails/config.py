@@ -16,6 +16,10 @@ DEFAULT_CONFIGURATION_FILE = '~/.logtrails.cfg'
 
 DEFAULT_PARSER_CONFIG = {
     'channel': 'logtrails',
+    'list_field_separator': ',',
+    'list_fields': [],
+    'integer_fields': [],
+    'float_fields': [],
 }
 
 class ConfigurationError(Exception):
@@ -51,11 +55,48 @@ class LogPatternConfiguration(object):
         return getattr(self.regexp, attr)
 
     @property
+    def integer_fields(self):
+        """Integer fields in configuration
+
+        """
+        fields = self.group.parser.settings['integer_fields']
+        if isinstance(fields, str):
+            fields = [v.strip() for v in fields.split(',')]
+        return fields
+
+    @property
+    def float_fields(self):
+        """Float fields in configuration
+
+        """
+        fields = self.group.parser.settings['float_fields']
+        if isinstance(fields, str):
+            fields = [v.strip() for v in fields.split(',')]
+        return fields
+
+    @property
+    def list_fields(self):
+        """List fields in configuration
+
+        """
+        fields = self.group.parser.settings['list_fields']
+        if isinstance(fields, str):
+            fields = [v.strip() for v in fields.split(',')]
+        return fields
+
+    @property
+    def list_field_separator(self):
+        """List field separator
+
+        """
+        return self.group.parser.settings['list_field_separator']
+
+    @property
     def channel(self):
         """Redis pubsub channel
 
         """
-        return self.group.parser.settings.get('channel', DEFAULT_PARSER_CONFIG['channel'])
+        return self.group.parser.settings['channel']
 
 
 class LogPatternGroupConfiguration(object):

@@ -49,7 +49,9 @@ class LogEntryParser(dict):
                 self.channel = pattern.channel
                 self['group'] = pattern.group.name
                 self['label'] = pattern.name
-                self.update(m.groupdict().items())
+                for key, value in m.groupdict().items():
+                    value = self.__format_value__(pattern, key, value)
+                    self[key] = value
                 return
 
         raise LogFileError('Entry does not match patterns: {0}'.format(line))
@@ -66,6 +68,35 @@ class LogEntryParser(dict):
                 return value, m.groupdict()['line']
 
         raise LogFileError('Error parsing entry time from line: {0}'.format(self.line))
+
+    def __format_value__(self, pattern, key, value):
+        """Format value
+
+        """
+        if key in pattern.list_fields:
+            value = [v.strip() for v in value.split(pattern.list_field_separator)]
+            if key in pattern.integer_fields:
+                try:
+                    value = [int(v) for v in value]
+                except ValueError:
+                    value = None
+            if key in pattern.float_fields:
+                try:
+                    value = [float(v) for v in value]
+                except ValueError:
+                    value = None
+        else:
+            if key in pattern.integer_fields:
+                try:
+                    value = int(value)
+                except ValueError:
+                    value = None
+            if key in pattern.float_fields:
+                try:
+                    value = float(value)
+                except ValueError:
+                    value = None
+        return value
 
     def append(self, message):
         self.message = '{0}\n{1}'.format(self.message, message.rstrip())

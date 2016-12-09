@@ -178,6 +178,7 @@ class Configuration(object):
     def __init__(self, path=DEFAULT_CONFIGURATION_FILE):
         self.path = os.path.expandvars(os.path.expanduser(path))
         self.queue_configuration = None
+        self.system_channel = 'logtrails'
         self.handlers = []
 
     @property

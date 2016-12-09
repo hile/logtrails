@@ -13,6 +13,7 @@ from systematic.log import LogEntry, LogFile, LogfileTailReader, LogFileError
 
 LOGFILE_DATE_PREFIX_PARSERS = (
     ( re.compile('^(?P<datetime>[^\s]+\s+\d+\s+\d+:\d+:\d+) (?P<line>.*)'), '%b %d %H:%M:%S', ),
+    ( re.compile('^(?P<datetime>\d+-\d+-\d+ \d+:\d+:\d+.\d+) (?P<line>.*)'), '%Y-%m-%d %H:%M:%S.%f', ),
     ( re.compile('^(?P<datetime>\d+/[^/]+/\d+:\d+:\d+:\d+) (?P<tz>\+\d+) (?P<line>.*)'), '%d/%b/%Y:%H:%M:%S', ),
 )
 
